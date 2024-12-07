@@ -1,0 +1,23 @@
+name: devops-1
+replicas: 3
+strategy:
+  rollingUpdate:
+    maxSurge: 25%
+    maxUnavailable: 25%
+repository:
+  image: bkits05/node-front
+  tag: "1.0.0"
+containerPort: 3000
+
+service:
+  name: devops-1
+  port: 3000
+  targetPort: 3000
+  type: LoadBalancer
+
+api:
+  name: devops-2
+  replicas: 2
+  image: bkits05/node-back
+  tag: "1.0.0"
+  containerPort: 3001
