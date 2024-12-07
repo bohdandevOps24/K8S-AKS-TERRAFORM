@@ -4,21 +4,6 @@ provider "azurerm" {
   skip_provider_registration = true
 }
 
-provider "helm" {
-  kubernetes {
-    config_path = "~/.kube/confing"
-  }
-
-
-}
-
-provider "kubernetes" {
-  
-    config_path = "~/.kube/confing"
-
-
-}
-
 
 terraform {
   required_providers {

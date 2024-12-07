@@ -1,51 +1,19 @@
-apiVersion: apps/v1
-kind: Deployment
-metadata: 
-  name: {{ .Values.name }}
-  labels:
-    app: {{ .Values.name }}
-spec:
-  strategy:
-    rollingUpdate:
-      maxSurge: 25%
-      maxUnavailable: 25%
-    type: RollingUpdate
-  replicas: {{ .Values.replicas }}
-  selector:
-    matchLabels:
-      app: devops-web
-  template:
-    metadata:
-      labels:
-        app: devops-web
-    spec:
-      containers:
-      - name: devops-web
-        image: {{ .Values.repository.image }}:{{ .Values.repository.tag }}
-        ports:
-        - containerPort: {{ .Values.containerPort }}
-        env:
-        - name: PORT
-          valueFrom:
-            configMapKeyRef: 
-              name: devops-web-config
-              key: PORT
-        - name: API_HOST
-          valueFrom:
-            configMapKeyRef: 
-              name: devops-web-config
-              key: API_HOST          
-        
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: devops-api-config
+data:
+  PORT: "3001"
+  DB: devops_db
+  DBUSER: devops_user
+  DBHOST: mysql
+  DBPORT: "3306"
+
+
 ---
 apiVersion: v1
-kind: Service
+kind: Secret
 metadata:
-  name: {{ .Values.service.name }}
-spec:
-  selector:
-    app: devops-web
-  ports:
-    - protocol: TCP
-      port: {{ .Values.service.port }}
-      targetPort: {{ .Values.service.targetPort }}
-  type: LoadBalancer
+  name: devops-api-secret
+data:
+  DBPASS: cGFzc3dvcmQ=

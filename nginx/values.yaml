@@ -21,3 +21,4 @@ api:
   image: bkits05/node-back
   tag: "1.0.0"
   containerPort: 3001
+  
